@@ -8,7 +8,7 @@ def home():
     if request.method == 'POST':
         # API call to Hugging Face model
         API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-        headers = {"Authorization": "Bearer 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"}  # Replace with your Hugging Face API token
+        headers = {"Authorization": "Bearer hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}  # Replace with your Hugging Face API token
         
         # Get the input text and word limit from the request
         data = request.json.get('text')
