@@ -1,15 +1,24 @@
-# Data-Summarization
+# 📝 Data Summarization API
 
-# About 
-This is a text summarization web app which uses hugging face (facebook/bart-large-cnn) model to summarize the text.
+This project provides an API for summarizing general text using a state-of-the-art transformer model. It leverages Hugging Face's `facebook/bart-large-cnn` model to generate concise and meaningful summaries from long-form input text.
 
-# Technologies Used
-- Hugging Face
-- Flask
+## 🚀 Overview
 
-# Steps for project
+- **Model Used**: [facebook/bart-large-cnn](https://huggingface.co/facebook/bart-large-cnn)
+- **Task**: Abstractive Text Summarization
+- **Input**: Any general-purpose text (news, articles, documents)
+- **Output**: Short and readable summary
+- **Deployment**: Exposed as a REST API
 
-1. Make a hugging face account.
-2. Searched for the required model.
-3. Used serverless API of model.
-4. Made a web app to deploy it.
+## 🛠️ Tech Stack
+
+- Python
+- Transformers (Hugging Face)
+- Flask (for API)
+  
+## 📦 Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/PiyushG1816/Data-Summarization.git
+   cd Data-Summarization
