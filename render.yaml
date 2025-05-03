@@ -6,4 +6,4 @@ services:
     startCommand: "gunicorn app:app"
     envVars:
       - key: HUGGINGFACE_API_TOKEN
-        value: your_api_key_here
+        value: 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
