@@ -1,41 +1,38 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify
 import requests
+import os
 
-app = Flask(__name__,template_folder='template')
+app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        # API call to Hugging Face model
-        API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-        headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_TOKEN')}"}        
-        
-        # Get the input text and word limit from the request
-        data = request.json.get('text')
-        word_limit = int(request.json.get('wordLimit', 150))  # Default to 150 if not provided
+@app.route('/summarize', methods=['POST'])
+def summarize():
+    # API call to Hugging Face model
+    API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+    headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_TOKEN')}"}
 
-        # Function to query Hugging Face API
-        def query(payload):
-            response = requests.post(API_URL, headers=headers, json=payload)
-            return response.json()
+    # Get input text and word limit from request JSON
+    data = request.json.get('text')
+    word_limit = int(request.json.get('wordLimit', 150))
 
-        # Query the model with the input text and word limit
-        output = query({
-            "inputs": data,
-            "parameters": {
-                "max_length": word_limit,
-                "min_length": 50  # Optional: you can adjust this if needed
-            }
-        })
+    if not data:
+        return jsonify({"error": "Missing 'text' in request"}), 400
 
-        # Extract the summarized text
-        summary = output[0].get('summary_text', 'Error: Unable to summarize the text.')
+    # Call the Hugging Face API
+    def query(payload):
+        response = requests.post(API_URL, headers=headers, json=payload)
+        return response.json()
 
-        # Return the summary in a JSON response
-        return jsonify({'summary': summary})
+    output = query({
+        "inputs": data,
+        "parameters": {
+            "max_length": word_limit,
+            "min_length": 50
+        }
+    })
 
-    # Render the index.html page for GET requests
-    return render_template('index.html')
+    summary = output[0].get('summary_text', 'Error: Unable to summarize the text.')
+
+    return jsonify({'summary': summary})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=5000)
